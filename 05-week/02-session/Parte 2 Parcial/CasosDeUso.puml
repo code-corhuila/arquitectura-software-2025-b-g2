@@ -1,0 +1,35 @@
+@startuml CasoDeUso
+actor "Administrador" as Admin
+actor "Pasajero" as Passenger
+actor "Empleado (Operaciones/RRHH)" as Employee
+actor "Tripulación (Crew)" as Crew
+actor "Sistema de Notificación (externo)" as ExtNotify
+
+rectangle "Sistema de Gestión de Vuelos" {
+  usecase "Gestionar Aeropuertos y Terminales" as UC_Airport
+  usecase "Gestionar Aeronaves" as UC_Aircraft
+  usecase "Registrar / Publicar Vuelos" as UC_Flight
+  usecase "Asignar Tripulación a Vuelo" as UC_AssignCrew
+  usecase "Gestionar Empleados / Roles" as UC_HR
+  usecase "Gestionar Seguridad y Formularios" as UC_Security
+  usecase "Comprar Ticket" as UC_Purchase
+  usecase "Registrar Equipaje" as UC_Baggage
+  usecase "Enviar Notificación a Usuario" as UC_Notify
+  usecase "Consultar Asignaciones (Tripulación)" as UC_CrewConsult
+}
+
+Admin --> UC_Airport
+Admin --> UC_Aircraft
+Admin --> UC_Flight
+Admin --> UC_AssignCrew
+Admin --> UC_HR
+Admin --> UC_Security
+Passenger --> UC_Purchase
+Passenger --> UC_Baggage
+Employee --> UC_AssignCrew
+Crew --> UC_CrewConsult
+UC_Notify .> ExtNotify : "usa"
+UC_Flight --> UC_Notify
+UC_Purchase --> UC_Notify
+@enduml
+

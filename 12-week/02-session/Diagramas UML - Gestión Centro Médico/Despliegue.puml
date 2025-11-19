@@ -1,0 +1,41 @@
+@startuml Despliegue
+title Diagrama de Despliegue - Sistema de Gestión de Centro Médico (GCM)
+
+left to right direction
+
+' ======== NODOS DE USUARIOS ========
+
+node "Dispositivo del Paciente" as PacienteDevice {
+  artifact "App Web / Móvil Paciente"
+}
+
+node "Dispositivo del Médico" as MedicoDevice {
+  artifact "App Web Médico"
+}
+
+node "Dispositivo del Administrador" as AdminDevice {
+  artifact "Panel Administrativo Web"
+}
+
+' ======== SERVIDOR DE APLICACIONES ========
+
+node "Servidor de Aplicaciones" as ServerApp {
+  artifact "API REST"
+  artifact "Servicios del Sistema GCM"
+  artifact "Módulos Funcionales (Usuarios, Citas, Historias, Personal, Inventario, Facturación, Reportes)"
+}
+
+' ======== SERVIDOR DE BASE DE DATOS ========
+
+node "Servidor de Base de Datos" as ServerDB {
+  database "Base de Datos GCM"
+}
+
+' ======== CONEXIONES ENTRE NODOS ========
+
+PacienteDevice --> ServerApp : HTTPS / JSON
+MedicoDevice --> ServerApp : HTTPS / JSON
+AdminDevice --> ServerApp : HTTPS / JSON
+ServerApp --> ServerDB : JDBC / SQL
+
+@enduml

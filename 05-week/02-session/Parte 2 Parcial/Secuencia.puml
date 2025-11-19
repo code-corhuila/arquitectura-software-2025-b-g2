@@ -1,0 +1,25 @@
+@startuml secuencia
+actor Passenger
+participant "Sistema" as System
+participant "Flight" as Flight
+participant "Ticket" as Ticket
+participant "PaymentService" as Pay
+participant "Notification" as Notify
+
+Passenger -> System : seleccionar vuelo
+System -> Flight : consultarDisponibilidad()
+Flight --> System : lista de asientos disponibles
+
+Passenger -> System : solicitar compra(ticket)
+System -> Ticket : crearTicket()
+Ticket --> System : ticket creado
+
+System -> Pay : procesarPago(ticket)
+Pay --> System : pago confirmado
+
+System -> Notify : enviarNotificación(Passenger, ticket)
+Notify --> System : notificación enviada
+
+System --> Passenger : confirmación de ticket
+@enduml
+

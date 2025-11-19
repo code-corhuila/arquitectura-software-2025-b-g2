@@ -1,0 +1,51 @@
+@startuml Diagrama De Objetos
+
+object "usuario1 : Usuario" as usuario1 {
+  nombre = "Sofía"
+  email = "sofia@email.com"
+}
+
+object "carrito1 : Carrito" as carrito1 {
+  idCarrito = 101
+  total = 250000
+}
+
+object "item1 : ItemCarrito" as item1 {
+  cantidad = 2
+  subtotal = 100000
+}
+
+object "item2 : ItemCarrito" as item2 {
+  cantidad = 1
+  subtotal = 150000
+}
+
+object "producto1 : Producto" as producto1 {
+  nombre = "Zapatos"
+  precio = 50000
+}
+
+object "producto2 : Producto" as producto2 {
+  nombre = "Bolso"
+  precio = 150000
+}
+
+object "pedido1 : Pedido" as pedido1 {
+  idPedido = 301
+  estado = "En proceso"
+}
+
+object "pago1 : Pago" as pago1 {
+  idPago = 501
+  monto = 250000
+  metodo = "Tarjeta de crédito"
+}
+usuario1 -- carrito1
+carrito1 -- item1
+carrito1 -- item2
+item1 -- producto1
+item2 -- producto2
+pedido1 -- carrito1
+pago1 -- pedido1
+
+@enduml

@@ -1,0 +1,34 @@
+@startuml Diagrama de actividades vuelo
+start
+
+:Pasajero llega al aeropuerto;
+
+:Realizar Check-in;
+if (Documentos válidos?) then (Sí)
+  :Generar Boarding Pass;
+else (No)
+  :Rechazar proceso;
+  stop
+endif
+
+:Ir a Control de Seguridad;
+if (Supera control?) then (Sí)
+  :Acceso a zona de embarque;
+else (No)
+  :Retenido por seguridad;
+  stop
+endif
+
+:Esperar llamada de embarque;
+
+:Presentar Boarding Pass en la puerta;
+if (Boarding Pass válido?) then (Sí)
+  :Abordar el avión;
+else (No)
+  :Denegar acceso al embarque;
+  stop
+endif
+
+stop
+
+@enduml

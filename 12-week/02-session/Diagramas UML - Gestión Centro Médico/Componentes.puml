@@ -1,0 +1,69 @@
+@startuml componentes
+title Diagrama de Componentes Mejorado - Sistema de Gestión de Centro Médico (GCM)
+
+' ======== DIRECCIÓN Y CAPAS ========
+left to right direction
+
+' ======== CAPA DE PRESENTACIÓN ========
+package "Capa de Presentación" {
+
+  [App Paciente] as UI_Paciente
+  [App Médico] as UI_Medico
+  [Panel Administrativo] as UI_Admin
+}
+
+' ======== CAPA DE LÓGICA DE NEGOCIO ========
+package "Capa de Lógica de Negocio" {
+
+  [Servicio de Autenticación] as AuthService
+  [Gestión de Usuarios] as ModUsuarios
+  [Gestión de Citas] as ModCitas
+  [Gestión de Historias Clínicas] as ModHistorias
+  [Gestión de Personal] as ModPersonal
+  [Gestión de Inventario] as ModInventario
+  [Gestión de Facturación] as ModFacturacion
+  [Reportes y Estadísticas] as ModReportes
+
+  [API REST / Controladores] as API
+}
+
+' ======== CAPA DE DATOS ========
+package "Capa de Datos" {
+  [Base de Datos GCM] as DB
+}
+
+
+' ======== RELACIONES ENTRE CAPAS ========
+
+' Interfaces de usuario se conectan a la API
+UI_Paciente --> API : Solicita / Consulta información
+UI_Medico --> API : Registra / Actualiza datos clínicos
+UI_Admin --> API : Administra módulos y reportes
+
+' API comunica la capa de presentación con los módulos de negocio
+API --> AuthService
+API --> ModUsuarios
+API --> ModCitas
+API --> ModHistorias
+API --> ModPersonal
+API --> ModInventario
+API --> ModFacturacion
+API --> ModReportes
+
+' Módulos se comunican con la base de datos
+AuthService --> DB
+ModUsuarios --> DB
+ModCitas --> DB
+ModHistorias --> DB
+ModPersonal --> DB
+ModInventario --> DB
+ModFacturacion --> DB
+ModReportes --> DB
+
+' Dependencias internas de lógica de negocio
+ModCitas --> ModUsuarios
+ModHistorias --> ModCitas
+ModFacturacion --> ModCitas
+ModReportes --> ModFacturacion
+
+@enduml

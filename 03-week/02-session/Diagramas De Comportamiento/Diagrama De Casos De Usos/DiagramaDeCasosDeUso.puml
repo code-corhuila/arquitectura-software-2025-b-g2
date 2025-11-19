@@ -1,0 +1,37 @@
+@startuml diagrama casos de uso 
+
+left to right direction
+actor Cliente
+actor "Pasarela de Pago" as Pago
+actor "Sistema de Facturación" as Facturacion
+
+rectangle "Digrama De Casos De Uso (Carrito de Compras)" {
+  
+  usecase "Navegar catálogo" as UC1
+  usecase "Seleccionar producto" as UC2
+  usecase "Agregar al carrito" as UC3
+  usecase "Revisar carrito" as UC4
+  usecase "Confirmar pedido" as UC5
+  usecase "Iniciar sesión / Registrarse" as UC6
+  usecase "Ingresar dirección de envío" as UC7
+  usecase "Seleccionar método de pago" as UC8
+  usecase "Procesar pago" as UC9
+  usecase "Generar factura" as UC10
+}
+
+Cliente --> UC1
+Cliente --> UC2
+Cliente --> UC3 
+Cliente --> UC4
+Cliente --> UC5
+Cliente --> UC7
+Cliente --> UC8
+
+UC5 --> UC6 : <<include>>
+UC5 --> UC9 : <<include>>
+UC9 --> UC10 : <<include>>
+
+Pago --> UC9
+Facturacion --> UC10
+
+@enduml

@@ -1,0 +1,52 @@
+@startuml C3
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+title C3 – Componentes del Microservicio de Reservas
+
+Container_Boundary(ms_reservas, "Microservicio de Reservas") {
+
+    Component(controller, "ReservasController <<REST Controller>>")
+    note right of controller
+        Expone endpoints para crear, consultar y modificar reservas.
+    end note
+
+    Component(service, "ReservasService <<Service Layer>>")
+    note right of service
+        Lógica de negocio para agendar y validar disponibilidad.
+    end note
+
+    Component(repo, "ReservasRepository <<Spring Data JPA>>")
+    note right of repo
+        Acceso a datos y operaciones CRUD.
+    end note
+
+    Component(adapter_pago, "PagoAdapter <<HTTP Client>>")
+    note right of adapter_pago
+        Cliente HTTP para comunicarse con la pasarela de pagos.
+    end note
+
+    Component(adapter_notif, "NotificacionesAdapter <<HTTP Client>>")
+    note right of adapter_notif
+        Cliente HTTP para enviar SMS o correos electrónicos.
+    end note
+}
+
+ContainerDb(db_reservas, "DB Reservas <<MySQL>>")
+note right of db_reservas
+    Almacena información de citas y disponibilidad.
+end note
+
+System_Ext(pago, "Pasarela de Pagos")
+System_Ext(notif, "Servicio de Notificaciones")
+
+Rel(controller, service, "Invoca")
+Rel(service, repo, "CRUD")
+Rel(repo, db_reservas, "Lee/Escribe")
+
+Rel(service, adapter_pago, "Procesa pago")
+Rel(adapter_pago, pago, "HTTP JSON")
+
+Rel(service, adapter_notif, "Envía aviso")
+Rel(adapter_notif, notif, "HTTP JSON")
+
+@enduml

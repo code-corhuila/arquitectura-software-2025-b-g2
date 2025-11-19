@@ -1,0 +1,27 @@
+@startuml Diagrama De Estados
+
+[*] --> Vacio : Iniciar sesión
+
+state Vacio {
+  [*] --> EsperandoProducto
+  EsperandoProducto --> EsperandoProducto : seleccionarProducto()
+}
+
+EsperandoProducto --> ConProductos : agregarProducto()
+ConProductos --> ConProductos : agregarOtroProducto()
+ConProductos --> Vacio : eliminarTodosProductos()
+
+ConProductos --> PedidoConfirmado : confirmarPedido()
+PedidoConfirmado --> PagoEnProceso : procesarPago()
+
+PagoEnProceso --> PagoExitoso : pagoAprobado()
+PagoEnProceso --> PagoFallido : pagoRechazado()
+
+PagoExitoso --> FacturaGenerada : generarFactura()
+FacturaGenerada --> NotificacionEnviada : enviarConfirmacion()
+
+NotificacionEnviada --> [*] : pedidoCompletado()
+
+PagoFallido --> ConProductos : reintentarPago()
+
+@enduml

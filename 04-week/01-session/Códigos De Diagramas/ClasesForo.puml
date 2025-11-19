@@ -1,0 +1,51 @@
+@startuml diagrama de clases, gestión de vuelos
+
+class Vuelo {
+  +idVuelo : int
+  +codigo : String
+  +origen : String
+  +destino : String
+  +horaProgramada : DateTime
+  +estado : EstadoVuelo {Programado, Abordando, Cerrado, Despegado, Cancelado}
+}
+
+class Pasajero {
+  +idPasajero : int
+  +nombre : String
+  +documento : String
+  +prioridad : TipoPrioridad {PMR, Familia, Business, Estandar}
+}
+
+class BoardingPass {
+  +idBoardingPass : int
+  +codigoQR : String
+  +claseVuelo : ClaseVuelo {Economica, Business, Primera}
+  +estado : EstadoBoardingPass {Emitido, Validado, Usado, Cancelado}
+}
+
+class Puerta {
+  +idPuerta : int
+  +numero : String
+  +estado : EstadoPuerta {Disponible, Asignada, Cerrada}
+}
+
+class IntegracionServicio {
+  +idServicio : int
+  +nombre : String
+  +tipo : TipoServicio {DCS, PSS, Migracion, PantallasFIDS}
+}
+
+class Evento {
+  +idEvento : int
+  +timestamp : DateTime
+  +descripcion : String
+}
+
+Vuelo *-- Pasajero
+Pasajero *-- BoardingPass
+Vuelo o-- BoardingPass
+Vuelo -- Puerta
+Vuelo o-- Evento
+IntegracionServicio -- Vuelo
+
+@enduml

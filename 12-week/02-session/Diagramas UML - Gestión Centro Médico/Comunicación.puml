@@ -1,0 +1,38 @@
+@startuml Comunicación
+title Diagrama de Comunicación - Sistema de Gestión de Centro Médico (GCM)
+
+' ==== ACTOR ====
+actor Recepcionista
+
+' ==== OBJETOS / COMPONENTES ====
+rectangle Sistema_GCM
+rectangle Modulo_Citas
+rectangle Modulo_Pacientes
+rectangle Modulo_Atencion
+rectangle Modulo_Facturacion
+database Base_Datos
+
+' ==== MENSAJES PRINCIPALES ====
+Recepcionista -> Sistema_GCM : 1. iniciarRegistroCita()
+Sistema_GCM -> Modulo_Citas : 2. validarDisponibilidad(medico, fecha)
+Modulo_Citas -> Base_Datos : 3. consultarAgenda()
+Base_Datos --> Modulo_Citas : 4. devolverAgenda()
+Modulo_Citas --> Sistema_GCM : 5. citaDisponible()
+
+Sistema_GCM -> Modulo_Pacientes : 6. obtenerDatosPaciente(idPaciente)
+Modulo_Pacientes -> Base_Datos : 7. consultarPaciente()
+Base_Datos --> Modulo_Pacientes : 8. devolverDatosPaciente()
+Modulo_Pacientes --> Sistema_GCM : 9. enviarDatosPaciente()
+
+Sistema_GCM -> Modulo_Atencion : 10. registrarConsulta(idCita, datosConsulta)
+Modulo_Atencion -> Base_Datos : 11. guardarHistoriaClinica()
+Base_Datos --> Modulo_Atencion : 12. confirmacionGuardado()
+
+Modulo_Atencion -> Modulo_Facturacion : 13. generarFactura(servicios)
+Modulo_Facturacion -> Base_Datos : 14. registrarFactura()
+Base_Datos --> Modulo_Facturacion : 15. confirmacionFactura()
+Modulo_Facturacion --> Sistema_GCM : 16. facturaGenerada()
+
+Sistema_GCM --> Recepcionista : 17. mostrarComprobante(facturaId)
+
+@enduml

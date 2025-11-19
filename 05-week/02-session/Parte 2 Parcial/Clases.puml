@@ -1,0 +1,218 @@
+@startuml clases
+abstract class Person {
+  - id: int
+  - first_name: String
+  - last_name: String
+  - document_number: String
+  - birth_date: Date
+  - gender: String
+  - phone: String
+  - email: String
+  - address: String
+  - attendant_name: String
+  - attending_phone: String
+  + getContactInfo(): String
+}
+
+class Passenger {
+  - id: int
+  + frequent_flyer_number: String
+  + solicitarTicket(): Ticket
+}
+
+class Employee {
+  - id: int
+  + salary: Decimal
+  + hire_date: Date
+  + getRole(): CrewRole
+}
+
+class UserAccount {
+  - id: int
+  - username: String
+  - password_hash: String
+  + autenticar(pwd: String): Boolean
+}
+
+class Role {
+  - id: int
+  + name: String
+  + description: String
+}
+
+class Module {
+  - id: int
+  + name: String
+  + color: String
+  + icon: String
+  + path: String
+}
+
+class Form {
+  - id: int
+  + name: String
+  + color: String
+  + icon: String
+  + path: String
+  + section: String
+}
+
+class FormModule {
+  - id: int
+}
+
+class RoleForm {
+  - id: int
+}
+
+class Notification {
+  - id: int
+  - channel: String
+  - subject: String
+  - message: String
+  - sent_at: DateTime
+  - status: String
+  + enviar(p: Person): void
+}
+
+class MessageTemplate {
+  - id: int
+  + code: String
+  + subject_template: String
+  + body_template: String
+}
+
+class Continent {
+  - id: int
+  + code: String
+  + name: String
+  + description: String
+}
+class Country {
+  - id: int
+  + code: String
+  + name: String
+  + description: String
+}
+class State {
+  - id: int
+  + code: String
+  + name: String
+  + description: String
+}
+class City {
+  - id: int
+  + code: String
+  + name: String
+  + description: String
+}
+
+class Airport {
+  - id: int
+  + code: String
+  + name: String
+  + address: String
+}
+class Terminal {
+  - id: int
+  + code: String
+  + name: String
+}
+class BoardingGate {
+  - id: int
+  + code: String
+  + name: String
+}
+
+class DocumentType {
+  - id: int
+  + code: String
+  + name: String
+  + description: String
+}
+class FlightType {
+  - id: int
+  + code: String
+  + name: String
+  + description: String
+}
+class AircraftType {
+  - id: int
+  + code: String
+  + name: String
+  + description: String
+}
+class CrewRole {
+  - id: int
+  + code: String
+  + name: String
+  + description: String
+}
+class TicketClass {
+  - id: int
+  + code: String
+  + name: String
+  + description: String
+}
+
+class Flight {
+  - id: int
+  + flight_date: Date
+  + departure_time: DateTime
+  + arrival_time: DateTime
+}
+class CrewAssignment {
+  - id: int
+  + assignment_date: Date
+  + status: String
+}
+class Ticket {
+  - id: int
+  + code: String
+  + seat_number: String
+  + price: Decimal
+}
+class Baggage {
+  - id: int
+  + code: String
+  + weight: Float
+}
+
+class Aircraft {
+  - id: int
+  + manufacturer: String
+  + registration_code: String
+  + hours_in_use: Integer
+}
+
+Aircraft -- AircraftType
+Employee -- CrewRole
+Employee -- CrewAssignment
+CrewAssignment -- CrewRole
+Passenger -- Ticket
+Flight *-- Ticket
+Ticket *-- Baggage
+Ticket -- TicketClass
+Flight -- FlightType
+Flight -- Aircraft
+Flight -- CrewAssignment
+Airport *-- Terminal
+Terminal *-- BoardingGate
+Flight -- BoardingGate
+Continent *-- Country
+Country *-- State
+State *-- City
+Person -- DocumentType
+Person -- City
+City -- Airport
+MessageTemplate -- Notification
+Person -- Notification
+Person -- UserAccount
+Role -- UserAccount
+Form -- FormModule
+Module -- FormModule
+Role -- RoleForm
+Form -- RoleForm
+Person <|-- Passenger
+Person <|-- Employee
+@enduml

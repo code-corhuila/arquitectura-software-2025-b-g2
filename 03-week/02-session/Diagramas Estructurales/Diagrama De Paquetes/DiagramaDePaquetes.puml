@@ -1,0 +1,35 @@
+@startuml diagrama de paquetes
+
+package "Usuarios" as PUsuarios {
+  class Usuario
+  class Autenticacion
+}
+
+package "Productos" as PProductos {
+  class Producto
+  class Categoria
+}
+
+package "Carrito" as PCarrito {
+  class Carrito
+  class ItemCarrito
+}
+
+package "Pedidos" as PPedidos { 
+  class Pedido
+  class DetallePedido
+}
+
+package "Pagos" as PPagos {
+  class Pago
+  class Factura
+}
+
+' --- Dependencias entre paquetes ---
+PUsuarios ..> PCarrito : "añadir al carrito"
+PCarrito ..> PProductos : "contiene productos"
+PCarrito ..> PPedidos : "genera pedido"
+PPedidos ..> PPagos : "requiere pago"
+PUsuarios ..> PPagos : "realiza pago"
+
+@enduml

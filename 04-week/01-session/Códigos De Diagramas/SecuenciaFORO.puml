@@ -1,0 +1,23 @@
+@startuml Secuencia - Embarque por Grupos
+
+actor Pasajero
+participant "GestiónPasajeros" as GP
+participant "IntegraciónDCS" as DCS
+participant "GestiónVuelos" as GV
+participant "FIDS" as FIDS
+
+GV -> FIDS : Anuncio de embarque por grupo
+FIDS -> Pasajero : Muestra grupo en pantalla
+Pasajero -> GP : Presenta Boarding Pass
+GP -> DCS : Validar Boarding Pass
+DCS --> GP : Resultado validación
+
+alt Boarding Pass válido
+  GP -> GV : Registrar pasajero abordado
+  GV -> GP : Confirmación
+else Boarding Pass inválido
+  GP -> Pasajero : Denegar embarque
+end
+
+GV -> FIDS : Actualizar estado embarque
+@enduml

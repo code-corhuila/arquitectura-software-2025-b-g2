@@ -1,0 +1,77 @@
+@startuml Estructura Compuesta
+title Diagrama de Estructura Compuesta - Sistema de Gestión del Centro Médico (GCM)
+
+package "Sistema de Gestión del Centro Médico (GCM)" {
+
+  ' ==== COMPONENTE PRINCIPAL ====
+  class GCM {
+    +gestionarCitas()
+    +gestionarPacientes()
+    +gestionarFacturas()
+    +registrarAtencion()
+  }
+
+  ' ==== SUBCOMPONENTES INTERNOS ====
+  class ModuloCitas {
+    +crearCita()
+    +confirmarCita()
+    +cancelarCita()
+  }
+
+  class ModuloPacientes {
+    +registrarPaciente()
+    +consultarHistoria()
+    +actualizarDatos()
+  }
+
+  class ModuloAtencion {
+    +iniciarConsulta()
+    +registrarDiagnostico()
+    +finalizarConsulta()
+  }
+
+  class ModuloFacturacion {
+    +generarFactura()
+    +procesarPago()
+  }
+
+  class BaseDeDatos {
+    +guardarInformacion()
+    +consultarInformacion()
+    +actualizarRegistros()
+  }
+
+  ' ==== ACTORES INTERNOS (ROLES) ====
+  class Paciente {
+    +solicitarCita()
+    +pagarServicio()
+  }
+
+  class Medico {
+    +realizarConsulta()
+    +emitirDiagnostico()
+  }
+
+  class Recepcionista {
+    +confirmarCita()
+    +registrarPago()
+  }
+
+  ' ==== CONECTORES INTERNOS ENTRE MÓDULOS ====
+  GCM o-- ModuloCitas : coordina >
+  GCM o-- ModuloPacientes : administra >
+  GCM o-- ModuloAtencion : integra >
+  GCM o-- ModuloFacturacion : gestiona >
+  GCM o-- BaseDeDatos : persiste >
+
+  ' ==== COMUNICACIÓN ENTRE ROLES Y MÓDULOS ====
+  Paciente --> ModuloCitas : solicita cita >
+  Paciente --> ModuloFacturacion : realiza pago >
+  Recepcionista --> ModuloCitas : confirma >
+  Recepcionista --> ModuloFacturacion : registra pago >
+  Medico --> ModuloAtencion : atiende >
+  ModuloAtencion --> BaseDeDatos : registra historia >
+  ModuloFacturacion --> BaseDeDatos : guarda factura >
+}
+
+@enduml

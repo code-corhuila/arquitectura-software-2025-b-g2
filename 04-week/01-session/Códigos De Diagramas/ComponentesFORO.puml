@@ -1,0 +1,13 @@
+@startuml Diagrama de Componentes - Sistema Gestión de Vuelos
+
+component "GestiónVuelos" as GV
+component "GestiónPasajeros" as GP
+component "IntegraciónDCS" as DCS
+component "FIDS" as FIDS
+
+GV --> FIDS : Actualización estado de vuelos
+GP --> DCS : Validación Boarding Pass
+GP --> GV : Actualización estado pasajero
+DCS --> GV : Excepciones (overbooking, reubicación)
+
+@enduml

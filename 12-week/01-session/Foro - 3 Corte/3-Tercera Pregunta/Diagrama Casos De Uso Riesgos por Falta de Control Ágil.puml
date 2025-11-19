@@ -1,0 +1,25 @@
+@startuml Riesgos_Agiles_Banca_CORREGIDO
+
+title Diagrama UML: Riesgos por Falta de Control Ágil en Banca
+
+left to right direction
+
+actor Cliente as C
+actor Auditor_Externo as A
+actor Hacker as H
+
+rectangle "Sistema Core Bancario" {
+    usecase Transf as "Transferencia de Fondos\n(Riesgo: Pérdida de Integridad)"
+    usecase Datos as "Gestión de Datos Confidenciales\n(Riesgo: Vulnerabilidad de Privacidad)"
+    usecase Registro as "Registro de Logs y Auditoría\n(Riesgo: Incumplimiento Normativo)"
+}
+
+C --|> Transf
+H --|> Datos : Explota Fallos por Pruebas Insuficientes
+A --|> Registro : Exige Trazabilidad
+Registro .left.> Transf : <<Riesgo de Trazabilidad Rota>>
+Registro .left.> Datos : <<Riesgo de No-Cumplimiento>>
+
+Transf .up.> Datos : <<Fallo por Interdependencia No Controlada>>
+
+@enduml

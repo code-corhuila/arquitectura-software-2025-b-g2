@@ -1,0 +1,43 @@
+@startuml Secuencia
+title Diagrama de Secuencia - Proceso de Atención Médica (Sistema GCM)
+
+actor Paciente
+actor Recepcionista
+actor Medico
+participant "Sistema GCM" as Sistema
+database "Base de Datos" as BD
+
+Paciente -> Sistema : Iniciar sesión()
+Sistema -> BD : Verificar credenciales
+BD --> Sistema : Credenciales válidas
+Sistema --> Paciente : Acceso concedido
+
+Paciente -> Sistema : Solicitar cita(médico, fecha, hora)
+Sistema -> BD : Registrar solicitud de cita
+BD --> Sistema : Confirmación de registro
+Sistema -> Recepcionista : Notificar solicitud de cita
+Recepcionista -> Sistema : Confirmar cita
+Sistema -> BD : Actualizar estado de cita a “Confirmada”
+Sistema --> Paciente : Enviar confirmación de cita
+
+== Día de la cita ==
+Paciente -> Medico : Asistir a la cita
+Medico -> Sistema : Registrar consulta y diagnóstico
+Sistema -> BD : Guardar información de consulta
+Medico -> Sistema : Generar receta(medicamentos)
+Sistema -> BD : Registrar receta
+Sistema -> Paciente : Mostrar resumen de consulta y receta
+
+== Facturación ==
+Sistema -> BD : Calcular costo de la cita
+Sistema -> Recepcionista : Generar factura
+Recepcionista -> Sistema : Registrar pago
+Sistema -> BD : Actualizar estado de factura y pago
+Sistema --> Paciente : Enviar comprobante de pago
+
+== Fin del proceso ==
+Sistema -> BD : Actualizar historia clínica del paciente
+Sistema --> Medico : Confirmar registro exitoso
+Sistema --> Paciente : Mostrar historial actualizado
+
+@enduml

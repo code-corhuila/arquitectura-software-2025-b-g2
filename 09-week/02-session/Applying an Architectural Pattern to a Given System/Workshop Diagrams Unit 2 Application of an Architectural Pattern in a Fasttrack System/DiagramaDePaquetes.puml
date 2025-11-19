@@ -1,0 +1,87 @@
+@startuml paquetes
+package "Plataforma FastTrack (Microservicios con Hexagonal Interno)" {
+  
+  package "Servicio de Envíos" {
+    package "domain" {
+      [Shipment]
+      [Package]
+      [Client]
+      [Address]
+      [Tracking]
+    }
+    package "application" {
+      [RegisterShipmentUseCase]
+      [GenerateInvoiceUseCase]
+    }
+    package "infrastructure" {
+      [ShipmentRestController]
+      [ShipmentOutPort]
+    }
+  }
+
+  package "Servicio de Flota" {
+    package "domain" {
+      [Vehicle]
+      [Route]
+      [Driver]
+      [Employee]
+    }
+    package "application" {
+      [AssignRouteUseCase]
+    }
+    package "infrastructure" {
+      [FleetRestController]
+    }
+  }
+
+  package "Servicio de Usuarios" {
+    package "domain" {
+      [User ]
+      [Role]
+      [Support]
+    }
+    package "application" {
+      [ManageUsersUseCase]
+    }
+    package "infrastructure" {
+      [UserRestController]
+    }
+  }
+
+  package "Servicio de Notificaciones" {
+    package "domain" {
+      [Notification]
+      [NotificationOutPort]
+    }
+    package "application" {
+      [SendNotificationUseCase]
+    }
+    package "infrastructure" {
+      [NotificationAdapter]
+      [EmailAdapter]
+      [PushAdapter]
+    }
+  }
+
+  package "Servicio de Seguimiento" {
+    package "domain" {
+      [TrackingEvent]
+      [Invoice]
+      [Payment]
+      [TrackingOutPort]
+    }
+    package "application" {
+      [UpdateTrackingUseCase]
+    }
+    package "infrastructure" {
+      [TrackingAdapter]
+    }
+  }
+}
+
+' Relaciones entre microservicios (APIs/eventos)
+[Servicio de Envíos] ..> [Servicio de Notificaciones] : notificaciones
+[Servicio de Envíos] ..> [Servicio de Flota] : asignaciones
+[Servicio de Envíos] ..> [Servicio de Usuarios] : usuarios
+[Servicio de Seguimiento] ..> [Servicio de Envíos] : actualizaciones
+@enduml

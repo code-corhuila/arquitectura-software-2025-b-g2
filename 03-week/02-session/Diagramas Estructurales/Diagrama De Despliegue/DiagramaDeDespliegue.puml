@@ -1,0 +1,23 @@
+@startuml  Diagrama de Despliegue
+
+node "Cliente (Navegador/App)" as Cliente {
+  artifact "Interfaz Web/Móvil"
+}
+
+node "Servidor de Aplicaciones" as Servidor {
+  artifact "Componente Usuario"
+  artifact "Componente Carrito"
+  artifact "Componente Productos"
+  artifact "Componente Pedido"
+  artifact "Componente Pagos"
+  artifact "API REST"
+}
+
+node "Servidor de Base de Datos" as BD {
+  artifact "Base de Datos Carrito"
+}
+
+Cliente -- Servidor : HTTP/HTTPS
+Servidor -- BD : JDBC/SQL
+
+@enduml

@@ -1,0 +1,21 @@
+@startuml Diagrama De Comunicación
+!pragma teoz true
+
+skinparam linetype ortho
+actor Usuario
+participant Carrito
+participant "Sistema de Autenticacion" as Auth
+participant "Sistema de Pago" as Pago
+participant "Sistema de Facturacion" as Factura
+participant "Sistema de Notificacion" as Notificacion
+
+Usuario -> Carrito : 1: seleccionarProducto()
+Carrito -> Usuario : 2: confirmarPedido()
+Usuario -> Auth : 3: autenticarUsuario()
+Auth -> Usuario : 4: usuarioValido()
+Usuario -> Pago : 5: procesarPago()
+Pago -> Factura : 6: generarFactura()
+Factura -> Notificacion : 7: enviarConfirmacion()
+Notificacion -> Usuario : 8: notificarPedido()
+
+@enduml

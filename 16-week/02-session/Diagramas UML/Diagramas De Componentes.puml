@@ -1,0 +1,76 @@
+@startuml Diagrama_de_Componentes
+
+title Arquitectura Hexagonal por Microservicios - Lavadero Pulido Rojo
+
+skinparam componentStyle rectangle
+
+package "Microservicio de Usuarios" as MS_Usuarios {
+    
+    component "Domain\n(Lógica de Negocio)" as U_Domain
+    component "Application\n(Casos de Uso)" as U_App
+    component "Adapters In/Out\n(REST, Repositorio)" as U_Adapters
+    database "DB Usuarios" as U_DB
+
+    U_Adapters --> U_App
+    U_App --> U_Domain
+    U_Adapters --> U_DB
+}
+
+package "Microservicio de Vehículos" as MS_Vehiculos {
+
+    component "Domain\n(Lógica de Negocio)" as V_Domain
+    component "Application\n(Casos de Uso)" as V_App
+    component "Adapters In/Out\n(REST, Repositorio)" as V_Adapters
+    database "DB Vehículos" as V_DB
+
+    V_Adapters --> V_App
+    V_App --> V_Domain
+    V_Adapters --> V_DB
+}
+
+package "Microservicio de Servicios" as MS_Servicios {
+
+    component "Domain\n(Lógica de Negocio)" as S_Domain
+    component "Application\n(Casos de Uso)" as S_App
+    component "Adapters In/Out\n(REST, Repositorio)" as S_Adapters
+    database "DB Servicios" as S_DB
+
+    S_Adapters --> S_App
+    S_App --> S_Domain
+    S_Adapters --> S_DB
+}
+
+package "Microservicio de Reservaciones" as MS_Reservas {
+
+    component "Domain\n(Lógica de Negocio)" as R_Domain
+    component "Application\n(Casos de Uso)" as R_App
+    component "Adapters In/Out\n(REST, Repositorio)" as R_Adapters
+    database "DB Reservas" as R_DB
+
+    R_Adapters --> R_App
+    R_App --> R_Domain
+    R_Adapters --> R_DB
+}
+
+' --- Comunicaciones entre microservicios (vía API REST) ---
+
+U_Adapters --> R_Adapters : API Users
+V_Adapters --> R_Adapters : API Vehículos
+S_Adapters --> R_Adapters : API Servicios
+
+' --- Infraestructura ---
+
+package "Infraestructura" {
+
+    node "Docker/Kubernetes" as Docker
+    node "CI/CD Jenkins" as Jenkins
+}
+
+MS_Usuarios --> Docker
+MS_Vehiculos --> Docker
+MS_Servicios --> Docker
+MS_Reservas --> Docker
+
+Docker --> Jenkins
+
+@enduml

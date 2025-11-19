@@ -1,4 +1,4 @@
-@startuml
+@startuml A
 class Persona{
     - id: int
     - tipo_documento : String

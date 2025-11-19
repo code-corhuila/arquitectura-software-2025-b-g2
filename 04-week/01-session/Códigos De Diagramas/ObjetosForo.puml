@@ -1,0 +1,39 @@
+@startuml Objetos
+
+skinparam shadowing false
+object "Vuelo AV123 : Vuelo" as vuelo {
+codigo = "AV123"
+origen = "BOG"
+destino = "MIA"
+estado = ABORDANDO
+horaProg = "2025-08-28 14:30"
+puertaAsignada = "A5"
+}
+
+object "Gate A5 : Puerta" as gate {
+id = "A5"
+estado = DISPONIBLE
+}
+
+object "Pax #ID=987654 : Pasajero" as pax {
+nombre = "Sofía A."
+prioridad = PMR
+estadoEmbarque = EN_COLA
+}
+
+object "BP : BoardingPass" as bp {
+vuelo = "AV123"
+asiento = "12C"
+zona = "1"
+valido = true
+}
+
+object "Cola Prioridad : Cola" as cola {
+grupos = [PMR, Familias, Business, General]
+siguiente = PMR
+}
+
+vuelo -- gate : asignadoA
+pax -- bp : porta
+pax -- cola : esperaEn
+@enduml

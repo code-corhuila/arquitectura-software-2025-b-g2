@@ -1,0 +1,25 @@
+@startuml Estados
+title Diagrama de Estados - Ciclo de Vida de una Cita Médica (Sistema GCM)
+
+[*] --> Solicitada : Paciente solicita cita
+
+Solicitada --> PendienteConfirmacion : Enviada a Recepcionista
+PendienteConfirmacion --> Confirmada : Recepcionista confirma cita
+PendienteConfirmacion --> Cancelada : Paciente cancela antes de confirmar
+
+Confirmada --> EnEspera : Día de la cita
+EnEspera --> EnAtencion : Paciente llega al consultorio
+EnAtencion --> Atendida : Médico finaliza la consulta
+Atendida --> Facturada : Sistema genera factura
+Facturada --> Pagada : Paciente realiza pago
+Pagada --> Completada : Sistema actualiza historia clínica
+
+' Estados alternos
+Confirmada --> Cancelada : Paciente o Centro cancela cita
+EnEspera --> NoAsistio : Paciente no se presenta
+
+Cancelada --> [*]
+NoAsistio --> [*]
+Completada --> [*]
+
+@enduml

@@ -1,0 +1,18 @@
+@startuml secuenci
+actor Cliente
+participant "ShipmentRestController" as Controller
+participant "RegisterShipmentUseCase" as UseCase
+participant "Shipment (Domain)" as Shipment
+participant "Notification (Domain)" as Notif
+participant "NotificationAdapter" as Adapter
+
+Cliente -> Controller : POST /shipments (datos)
+Controller -> UseCase : ejecutar(RegisterShipment)
+UseCase -> Shipment : crear shipment
+Shipment --> UseCase : ID creado
+UseCase -> Notif : preparar notificación
+Notif -> Adapter : enviar
+Adapter -> Cliente : notificación recibida
+UseCase -> Controller : respuesta (ID, código)
+Controller -> Cliente : confirmación
+@enduml

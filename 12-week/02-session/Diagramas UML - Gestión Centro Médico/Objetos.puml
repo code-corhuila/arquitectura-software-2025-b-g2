@@ -1,0 +1,114 @@
+@startuml Objetos
+title Diagrama de Objetos - Sistema de Gestion del Centro Medico (GCM)
+
+' ==== INSTANCIAS (OBJETOS) ====
+object recepcionista1 <<Recepcionista>> {
+  nombre = "Laura Gomez"
+  id = "RCP001"
+}
+
+object sistemaGCM <<Sistema_GCM>> {
+  version = "3.2.1"
+  estado = "En ejecucion"
+}
+
+object cita1 <<Cita>> {
+  idCita = "CT001"
+  fecha = "2025-10-21"
+  hora = "09:00"
+  medico = "Dr. Perez"
+  estado = "Confirmada"
+}
+
+object paciente1 <<Paciente>> {
+  idPaciente = "PAC100"
+  nombre = "Carlos Ruiz"
+  edad = 45
+}
+
+object consulta1 <<Consulta>> {
+  idConsulta = "CONS001"
+  motivo = "Dolor de cabeza"
+  diagnostico = "Migrana"
+}
+
+object factura1 <<Factura>> {
+  idFactura = "FAC001"
+  total = 85000
+  estado = "Pagada"
+}
+
+object bdCentroMedico <<BaseDatos>> {
+  nombre = "DB_CentroMedico"
+  motor = "MySQL"
+}
+
+' ==== RELACIONES ENTRE OBJETOS ====
+recepcionista1 --> sistemaGCM : usa
+sistemaGCM --> cita1 : gestiona
+sistemaGCM --> paciente1 : consultaDatos
+sistemaGCM --> consulta1 : registra
+consulta1 --> factura1 : genera
+sistemaGCM --> bdCentroMedico : almacenaDatos
+cita1 --> paciente1 : perteneceA
+
+@enduml
+
+TIMING 
+@startuml
+title Diagrama de Tiempos - Sistema GCM
+
+' Definición de líneas de tiempo
+robust "Paciente" as Paciente
+concise "Sistema GCM" as Sistema
+concise "Medico" as Medico
+concise "BaseDatos" as BD
+
+@0
+Paciente is Idle
+Sistema is Esperando
+Medico is Libre
+BD is Disponible
+
+@1
+Paciente is SolicitandoCita
+Sistema is ProcesandoSolicitud
+
+@2
+BD is ConsultandoDisponibilidad
+Sistema is EsperandoRespuesta
+
+@3
+BD is Disponible
+Sistema is ConfirmandoCita
+Paciente is EsperandoConfirmacion
+
+@4
+Paciente is CitaConfirmada
+Sistema is EnReposo
+
+@5
+Medico is AtendiendoPaciente
+Paciente is EnConsulta
+
+@6
+Medico is RegistrandoHistoria
+BD is GuardandoDatos
+
+@7
+BD is GenerandoFactura
+Sistema is EnviandoFactura
+Paciente is RecibiendoFactura
+
+@8
+Paciente is Pagando
+BD is RegistrandoPago
+
+@9
+Paciente is Inactivo
+Sistema is Finalizado
+Medico is Libre
+BD is Disponible
+
+@enduml
+

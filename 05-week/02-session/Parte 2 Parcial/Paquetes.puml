@@ -1,0 +1,69 @@
+@startuml paquetes
+skinparam packageStyle rectangle
+skinparam rankdir TB
+skinparam ArrowColor #333333
+
+package "Parameterization" as Param {
+  class DocumentType
+  class FlightType
+  class AircraftType
+  class CrewRole
+  class TicketClass
+}
+
+package "Security" as Sec {
+  class Role
+  class Module
+  class Form
+  class FormModule
+  class RoleForm
+  class Person
+  class UserAccount
+}
+
+package "Geolocation" as Geo {
+  class Continent
+  class Country
+  class State
+  class City
+}
+
+package "Infrastructure" as Infra {
+  class Airport
+  class Terminal
+  class BoardingGate
+}
+
+package "Flight Operations" as FO {
+  class Flight
+  class CrewAssignment
+  class Ticket
+  class Baggage
+}
+
+package "Passengers & Services" as PS {
+  class Passenger
+}
+
+package "Human Resources" as HR {
+  class Employee
+}
+
+package "Aircraft Management" as AM {
+  class Aircraft
+}
+
+package "Notifications" as Notif {
+  class MessageTemplate
+  class Notification
+}
+
+Geo -down-> Infra
+Infra -down-> FO
+Param -right-> FO
+Sec -right-> FO
+HR -left-> FO
+FO -down-> PS
+FO -down-> AM
+FO -down-> Notif
+@enduml

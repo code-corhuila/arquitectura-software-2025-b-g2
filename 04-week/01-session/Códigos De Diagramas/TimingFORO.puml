@@ -1,0 +1,41 @@
+@startuml Timing
+skinparam shadowing false
+title Timing – AV123 (BOG→MIA) – 2025-08-28
+
+concise "Pax #987654" as PAX
+concise "Cola Prioridad" as QC
+concise "Seguridad" as SEC
+concise "Gate A5" as GATE
+concise "Gestión Vuelos" as GV
+concise "FIDS" as FIDS
+
+@-45
+PAX is Esperando
+QC is Cerrada
+SEC is Libre
+GATE is Preparando
+GV is Programado
+FIDS is AnuncioPrevio
+
+@-30
+QC is AbrePMR
+PAX is EnColaPMR
+FIDS is LlamadoPMR
+
+@-25
+SEC is Escaneo
+PAX is Seguridad
+
+@-20
+QC is AbreFamilias
+FIDS is LlamadoFamilias
+
+@0
+PAX is CheckIn
+QC is Cerrada
+SEC is Libre
+GATE is Preparando
+GV is AbordajeProx
+FIDS is Estático
+
+@enduml

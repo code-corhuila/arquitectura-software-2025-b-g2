@@ -1,0 +1,40 @@
+@startuml Actividades
+title Diagrama de Actividades - Sistema de Gestión de Centro Médico (GCM)
+
+start
+
+:Inicio del proceso;
+
+:Paciente inicia sesión en el sistema;
+if (¿Autenticación correcta?) then (Sí)
+  :Acceder al módulo de Citas Médicas;
+  :Seleccionar especialidad y médico disponible;
+  :Solicitar cita médica;
+  :Sistema registra la solicitud de cita;
+  :Recepcionista confirma y agenda la cita;
+  :Sistema envía notificación de confirmación al paciente;
+
+  :Día de la cita;
+  :Médico atiende al paciente;
+  :Registrar consulta y diagnóstico;
+  :Generar receta médica (si aplica);
+  :Actualizar historia clínica del paciente;
+
+  :Generar factura por el servicio;
+  :Paciente realiza el pago;
+  :Registrar pago en el sistema;
+
+  fork
+    :Administrador genera reporte mensual;
+  fork again
+    :Base de datos actualiza registros globales;
+  end fork
+
+else (No)
+  :Mostrar mensaje de error;
+  :Solicitar reingreso de credenciales;
+endif
+
+:Fin del proceso;
+stop
+@enduml

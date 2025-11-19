@@ -1,0 +1,17 @@
+@startuml Reservar un servicio
+actor Cliente
+participant Sistema
+participant Reservacion
+participant Servicio
+
+Cliente -> Sistema: Iniciar Sesión
+Sistema -> Cliente: Confirmación
+Cliente -> Sistema: Seleccionar Vehículo
+Cliente -> Sistema: Elegir Servicio
+Sistema -> Reservacion: Crear Reservación
+Sistema -> Servicio: Verificar disponibilidad
+Servicio --> Sistema: Confirmación disponibilidad
+Reservacion --> Sistema: Reservación creada
+Sistema --> Cliente: Confirmación de reservación
+
+@enduml

@@ -1,0 +1,36 @@
+@startuml Diagrama De Actividades
+
+start
+:Usuario navega en el catálogo de productos;
+:Seleccionar producto;
+:Agregar producto al carrito;
+
+if (¿Desea seguir comprando?) then (Sí)
+  :Volver al catálogo;
+  repeat
+    :Seleccionar producto;
+    :Agregar producto al carrito;
+  repeat while (¿Seguir comprando?);
+endif
+
+:Revisar carrito de compras;
+:Confirmar pedido;
+
+if (¿El usuario está autenticado?) then (Sí)
+  :Validar usuario;
+else (No)
+  :Registrar o iniciar sesión;
+endif
+
+:Ingresar dirección de envío;
+:Seleccionar método de pago;
+:Procesar pago;
+
+if (¿Pago aprobado?) then (Sí)
+  :Generar factura;
+  :Confirmar pedido al usuario;
+else (No)
+  :Notificar error de pago;
+endif
+stop
+@enduml

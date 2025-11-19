@@ -1,0 +1,32 @@
+@startuml Paquetes
+title Diagrama de Paquetes - Sistema de Gestión de Centro Médico (GCM)
+
+left to right direction
+
+package "Sistema de Gestión de Centro Médico (GCM)" {
+  
+  package "Gestión de Usuarios" {
+  }
+
+  package "Citas Médicas" {
+  }
+
+  package "Historias Clínicas" {
+  }
+
+  package "Gestión de Personal" {
+  }
+
+  package "Inventario y Medicamentos" {
+  }
+
+  package "Facturación" {
+  }
+
+  package "Reportes y Estadísticas" {
+  }
+}
+
+database "Base de Datos GCM"
+
+@enduml

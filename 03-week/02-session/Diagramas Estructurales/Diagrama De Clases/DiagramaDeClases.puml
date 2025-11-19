@@ -1,0 +1,57 @@
+@startuml diagrama de clases
+class Usuario {
+    +int idUsuario
+    +string nombre
+    +string email
+    +string contraseña
+    +registrar()
+    +iniciarSesion()
+    +cerrarSesion()
+}
+
+class Producto {
+    +int idProducto
+    +string nombre 
+    +double precio
+    +int stock
+    +actualizarStock(cantidad:int)
+    +obtenerInfo():string
+}
+
+class ItemCarrito {
+    +int cantidad
+    +double subtotal
+    +calcularSubtotal():double
+}
+
+class Carrito {
+    +int idCarrito
+    +Date fechaCreacion
+    +double total
+    +agregarProducto(p:Producto, cantidad:int)
+    +eliminarProducto(p:Producto)
+    +calcularTotal():double
+}
+
+class Pedido {
+    +int idPedido
+    +Date fecha
+    +string estado
+    +confirmar()
+    +cancelar()
+}
+
+class Pago {
+    +int idPago
+    +double monto
+    +string metodo
+    +procesarPago():bool
+    +generarRecibo():string
+}
+
+Usuario --> Carrito
+Carrito *-- ItemCarrito
+ItemCarrito --> Producto
+Carrito --> Pedido
+Pedido --> Pago
+@enduml

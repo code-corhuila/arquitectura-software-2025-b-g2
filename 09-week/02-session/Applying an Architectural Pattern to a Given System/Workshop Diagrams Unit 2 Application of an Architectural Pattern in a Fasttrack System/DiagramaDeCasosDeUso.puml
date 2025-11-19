@@ -1,0 +1,30 @@
+@startuml caso de usos
+left to right direction
+actor "Cliente" as Cliente
+actor "Conductor" as Conductor
+actor "Administrador" as Admin
+actor "Soporte" as Soporte
+
+rectangle "Plataforma FastTrack" {
+  usecase "Registrar envío" as UC1
+  usecase "Rastrear paquete" as UC2
+  usecase "Recibir notificación" as UC3
+  usecase "Administrar flota" as UC4
+  usecase "Gestionar usuarios" as UC5
+  usecase "Generar factura" as UC6
+  usecase "Asignar ruta y conductor" as UC7
+  usecase "Atender ticket de soporte" as UC8
+}
+
+Cliente --> UC1
+Cliente --> UC2
+Cliente --> UC3
+Admin --> UC4
+Admin --> UC5
+Admin --> UC7
+Conductor --> UC2
+Conductor --> UC7
+Soporte --> UC8
+UC1 ..> UC6 : <<include>>
+UC1 ..> UC3 : <<include>>
+@enduml

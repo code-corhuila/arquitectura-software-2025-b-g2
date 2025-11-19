@@ -1,0 +1,36 @@
+@startuml A
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+left to right direction
+
+title C1 – Context Diagram: Sistema del Lavadero
+
+' ===== Personas =====
+Person(cliente, "Cliente", "Solicita servicios de lavado, consulta estado y realiza pagos.")
+Person(empleado, "Empleado", "Opera el lavadero y actualiza el estado de los servicios.")
+Person(admin, "Administrador", "Gestiona precios, horarios, reportes y configuraciones.")
+
+' ===== Sistema Interno =====
+System_Boundary(sb1, "Sistema del Lavadero") {
+    System(sistema, "Sistema del Lavadero", "Plataforma web/móvil que gestiona reservas, pagos y notificaciones.")
+}
+
+' ===== Sistemas Externos =====
+System_Ext(pago, "Pasarela de Pago", "Procesamiento de pagos electrónicos.")
+System_Ext(notif, "Servicio de Notificaciones", "Envío de SMS y correos electrónicos.")
+
+' ===== Relaciones (flechas ordenadas) =====
+
+Rel(cliente, sistema, "Reserva servicios / Consulta estado / Realiza pagos")
+Rel(sistema, cliente, "Confirma reservas y envía notificaciones")
+
+Rel(empleado, sistema, "Gestiona servicios y actualiza estados")
+Rel(admin, sistema, "Configura precios, horarios y reportes")
+
+Rel(sistema, pago, "Solicita procesamiento de pago")
+Rel(pago, sistema, "Aprobación / Rechazo")
+
+Rel(sistema, notif, "Solicita envío de SMS/Email")
+Rel(notif, sistema, "Reporte de entrega")
+
+@enduml

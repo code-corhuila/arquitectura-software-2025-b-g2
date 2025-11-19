@@ -1,0 +1,55 @@
+@startuml Estructura Compuesta
+
+package "Modulo Asignacion/Colas" as MOD {
+rectangle "AsignacionPuertas\n(StructuredClassifier)" as AP {
+[GestorPuertas] as GP
+[MotorPrioridad] as MP
+[ReglasNegocio] as RN
+[AdaptadorFIDS] as AF
+[RepoVuelos] as RV
+[EventBus/Logger] as EV
+}
+
+rectangle "ColasPrioridad\n(StructuredClassifier)" as CP {
+[GestorColas] as GC
+[EstrategiaPrioridad] as EP
+}
+}
+
+GP -- RN : valida asignación
+GP -- RV : consulta/actualiza gate
+MP -- GC : solicita siguiente grupo
+MP -- RN : reglas (PMR, familias, business)
+GC -- EP : decide orden
+AP -- EV : publica eventos
+CP -- EV : publica métricas
+
+interface IGestVuelos <<port>>
+interface IFIDS <<port>>
+interface ISeguridad <<port>>
+
+
+AP -[hidden]- CP
+
+
+AP .. IGestVuelos : usa/actualiza estado vuelo
+AP .. IFIDS : push a pantallas
+CP .. ISeguridad : notifica llamados por grupo
+
+
+note right of RN
+- Reglas excepciones:
+* Overbooking
+* Cambio de puerta
+* Retraso
+* No-Show
+end note
+
+
+note bottom of EV
+Observabilidad:
+- Registro de eventos
+- Tiempos por fase
+- Alertas (SLA)
+end note
+@enduml

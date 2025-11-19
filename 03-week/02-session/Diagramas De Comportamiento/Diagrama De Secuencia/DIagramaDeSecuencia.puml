@@ -1,0 +1,24 @@
+@startuml DiagramaDeSecuenciaCarrito
+
+actor Usuario
+participant "Carrito de Compras" as Carrito
+participant "Sistema de Autenticación" as Auth
+participant "Sistema de Pagos" as Pago
+participant "Sistema de Notificaciones" as Notif
+
+Usuario -> Auth : iniciarSesion(usuario, contraseña)
+Auth --> Usuario : sesionIniciada()
+
+Usuario -> Carrito : agregarProducto(producto)
+Carrito --> Usuario : confirmarProductoAgregado()
+
+Usuario -> Carrito : confirmarPedido()
+Carrito -> Pago : procesarPago(datosPago)
+
+Pago --> Carrito : pagoExitoso()
+Carrito -> Notif : enviarConfirmacion()
+Notif --> Usuario : notificacionCompra()
+
+Carrito --> Usuario : mostrarFactura()
+
+@enduml

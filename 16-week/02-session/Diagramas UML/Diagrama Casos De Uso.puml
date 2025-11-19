@@ -1,0 +1,19 @@
+@startuml casos de uso
+actor Cliente
+actor Empleado
+actor Administrador
+
+Cliente --> (Registrar Usuario)
+Cliente --> (Iniciar Sesión)
+Cliente --> (Reservar Servicio)
+Cliente --> (Consultar Estado de Reservación)
+
+Empleado --> (Registrar Vehículo)
+Empleado --> (Gestionar Servicios)
+Empleado --> (Registrar Cliente)
+
+Administrador --> (Gestionar Usuarios)
+Administrador --> (Generar Reportes)
+Administrador --> (Configurar Servicios y Precios)
+
+@enduml

@@ -1,0 +1,27 @@
+@startuml Comunicacion
+skinparam linetype ortho
+
+object GV as "GestiónVuelosSvc"
+object GP as "GestiónPasajerosSvc"
+object APS as "AsignacionPuertasSvc"
+object CPS as "ColasPrioridadSvc"
+object SEG as "SeguridadSvc"
+object DCS as "Airline DCS/PSS"
+object MIG as "MigraciónSvc"
+object FIDS as "FIDS"
+object EB as "EventBus"
+
+GV -- APS : 1. Programar vuelo / asignar puerta
+APS -- CPS : 2. Solicitar grupo prioridad
+CPS -- SEG : 3. Enviar siguiente grupo (PMR, familias, business)
+SEG -- DCS : 4. Validar boarding pass
+DCS -- SEG : 5. Respuesta (OK/Reject)
+SEG -- MIG : 6. Validar control migratorio
+MIG -- SEG : 7. Respuesta control
+SEG -- GP  : 8. Pasajero embarcado
+GP -- GV   : 9. Actualizar estado pasajero
+APS -- FIDS: 10. Notificar cambio puerta / embarque
+GV -- EB   : 11. Publicar evento vuelo-estado
+SEG -- EB  : 12. Publicar evento seguridad
+CPS -- EB  : 13. Publicar métricas de colas
+@enduml

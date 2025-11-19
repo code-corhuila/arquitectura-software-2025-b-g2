@@ -1,0 +1,23 @@
+@startuml diagrama de componentes 
+
+[Componente Usuario] as CU
+[Componente Carrito] as CC 
+[Componente Productos] as CProd
+[Componente Pedido] as CPedi
+[Componente Pagos] as CPgos
+() "Interface Autenticacion" as IA
+() "Interface Gestion Carrito" as IGC 
+() "Interface Gestion Productos" as IGProd 
+() "Interface Gestion Pedidos" as IGPedi 
+() "Interface Gestion Pagos" as IGPgos 
+CU -down-- IA 
+CC -down-- IGC
+CProd -down-- IGProd
+CPedi -down-- IGPedi
+CPgos -down-- IGPgos 
+
+CC ..> IGProd
+CU ..> IGC
+CC ..> IGPedi
+CPedi ..> IGPgos
+@enduml

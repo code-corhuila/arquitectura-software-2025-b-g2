@@ -1,0 +1,38 @@
+@startuml Despliegue
+!pragma layout smetana
+
+skinparam shadowing false
+skinparam dpi 180
+skinparam ArrowThickness 0.8
+skinparam defaultFontName Helvetica
+skinparam linetype ortho
+
+node "Cloud\nProveedor Nube" as cloud #DDFFF7 {
+    
+    node "<<API Publica>>\nAPI Gateway (WAF, RateLimit)" as apigw #CCE8E2
+    node "Balanceador L7 (HTTPS)" as lb_cloud #CCE8E2
+
+    node "Cluster Kubernetes (AKS/EKS/GKE)" as k8s #E3F6F5 {
+        artifact "FlightSvc"
+        artifact "PaxSvc"
+        artifact "BoardingSvc"
+        artifact "FIDS-Adapter"
+        artifact "Security-Adapter"
+        artifact "Migracion-Adapter"
+        artifact "EventBus Client"
+    }
+
+    node "DMZ" as dmz #FFF6E5 {
+        node "Reverse Proxy" as proxy
+        node "Firewall" as fw
+    }
+
+    node "Observabilidad" as observ_cloud #E6E6FA {
+        artifact "Tracing (OpenTelemetry)"
+        artifact "Logs (ELK/CloudLogs)"
+        artifact "Métricas (Prom/Grafana)"
+    }
+}
+
+node "<<On-Prem>>\nData Center Aeropuerto" as dc #F2F2F2
+@enduml

@@ -1,0 +1,55 @@
+@startuml RUP_Scrum_Hibrido_Flujo
+
+title Diagrama UML: Flujo Híbrido (RUP - Scrum Controlado)
+
+start
+group FASE RUP: INICIO Y ELABORACIÓN
+  :Definir Requisitos Críticos y Arquitectura Base;
+  :Análisis Detallado de Riesgos (Propuesta 4);
+  :Crear Product Backlog;
+end group
+
+partition "GATE RUP: Aprobación de Arquitectura" {
+  if (¿Arquitectura y Riesgos Aprobados?) then (Sí)
+    :Pasar a la Construcción;
+  else (No)
+    :Revisión de Planificación y Diseño;
+    stop
+  end if
+}
+group FASE RUP: CONSTRUCCIÓN (Ciclos Híbridos)
+  repeat
+    :Planificación de Sprint (Scrum);
+    :Desarrollo y Daily Scrum (Scrum - Propuesta 1 y 5);
+    :Pruebas de Integración y Seguridad;
+
+    partition "CHECKPOINT RUP: Revisión y Trazabilidad" {
+      :Revisión Formal de Sprint (Propuesta 3);
+      :Validar Documentación de Trazabilidad (Propuesta 2);
+
+      if (¿Calidad Aprobada y Documentación Completa?) then (Sí)
+        :Aprobar Incremento;
+      else (No)
+        :Corrección Obligatoria;
+        stop
+      end if
+    }
+  repeat while (Quedan Sprints por completar?) is (Sí) not (No)
+end group
+group FASE RUP: TRANSICIÓN
+  :Pruebas de Aceptación del Usuario (UAT);
+  :Retrospectiva del Proyecto (Scrum - Propuesta 5);
+  :Auditoría de Cumplimiento Final;
+end group
+
+partition "GATE RUP: Despliegue en Vivo" {
+  if (¿Auditoría Aprobada y Aceptación Final?) then (Sí)
+    :Sistema Bancario en Producción;
+    stop
+  else (No)
+    :Ajustes de Compliance y Re-Auditoría;
+    stop
+  end if
+}
+
+@enduml

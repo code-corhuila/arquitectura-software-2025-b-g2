@@ -1,0 +1,29 @@
+@startuml C4_Nivel_2_Arquitectura_Bancaria
+
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+LAYOUT_WITH_LEGEND()
+
+Person(cliente, "Cliente Bancario", "Usuario que realiza transacciones y consultas")
+
+System_Boundary(core_bank, "Sistema Bancario (Arquitectura Esperada)") {
+
+    Container(web_app, "Aplicación Web/Móvil", "React/Kotlin/Swift", "Permite acceso seguro a las funciones del banco (Frontend).")
+
+    Container(api_gateway, "API Gateway / Servicios de Negocio", "Java/Spring Boot/Microservicios", "Punto de entrada único. Maneja la Autenticación, Autorización (Seguridad) y la Lógica de Transacciones (Escalabilidad).")
+
+    Container(core_db, "Base de Datos Core (Contable)", "PostgreSQL/Oracle", "Almacena saldos, cuentas y el registro contable. Requiere Integridad y Trazabilidad total.")
+
+    Container(compliance_service, "Servicio de Auditoría y Compliance", "Python/Kafka", "Registra todos los logs, transacciones y accesos para cumplir con las regulaciones y auditorías.")
+}
+
+Rel(cliente, web_app, "Accede a")
+Rel(web_app, api_gateway, "Llamadas a Servicios (vía HTTPS)")
+
+Rel(api_gateway, core_db, "Lee y Escribe (Transacciones Críticas)")
+Rel(api_gateway, compliance_service, "Envía Logs de Acceso y Transacción")
+
+Rel_R(compliance_service, core_db, "Consulta Registros Históricos para Auditoría")
+Rel(core_db, compliance_service, "Notifica Cambios Críticos")
+
+@enduml

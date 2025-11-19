@@ -1,0 +1,27 @@
+@startuml Diagrama de Estructura Compuesta
+
+class Carrito {
+  +idCarrito: int
+  +fechaCreacion: Date
+  +total: double
+  +agregarProducto(p:Producto, cantidad:int)
+  +eliminarProducto(p:Producto)
+  +calcularTotal():double
+}
+class ItemCarrito {
+  +cantidad: int
+  +subtotal: double
+  +calcularSubtotal():double
+}
+class Producto {
+  +idProducto: int
+  +nombre: string
+  +precio: double
+  +stock: int
+  +actualizarStock(cantidad:int)
+  +obtenerInfo():string
+}
+Carrito o-- "1..*" ItemCarrito : contiene >
+ItemCarrito --> Producto : referencia >
+
+@enduml

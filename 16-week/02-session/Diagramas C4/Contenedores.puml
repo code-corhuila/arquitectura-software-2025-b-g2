@@ -1,0 +1,49 @@
+@startuml C2
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+title C2 – Diagrama de Contenedores: Sistema del Lavadero Pulido Rojo
+
+Person(cliente, "Cliente", "Usa el portal web/móvil para reservar y consultar servicios.")
+Person(empleado, "Empleado", "Gestiona vehículos y servicios.")
+Person(admin, "Administrador", "Configura precios, usuarios y reportes.")
+
+System_Boundary(sistema, "Sistema del Lavadero Pulido Rojo") {
+
+    Container(api_gateway, "API Gateway", "Spring Cloud Gateway", "Rotea peticiones a los microservicios.")
+    Container(frontend, "Portal Web/Móvil", "Angular/Ionic", "Interfaz para clientes, empleados y administradores.")
+
+    ContainerDb(db_usuarios, "DB Usuarios", "MySQL", "Almacena usuarios y roles.")
+    ContainerDb(db_vehiculos, "DB Vehículos", "MySQL", "Registra los vehículos.")
+    ContainerDb(db_servicios, "DB Servicios", "MySQL", "Catálogo de servicios.")
+    ContainerDb(db_reservas, "DB Reservaciones", "MySQL", "Gestiona citas y disponibilidad.")
+
+    Container(ms_usuarios, "Microservicio Usuarios", "Spring Boot | Hexagonal", "Autenticación, registro y roles.")
+    Container(ms_vehiculos, "Microservicio Vehículos", "Spring Boot | Hexagonal", "Gestión de vehículos.")
+    Container(ms_servicios, "Microservicio Servicios", "Spring Boot | Hexagonal", "Catálogo y precios.")
+    Container(ms_reservas, "Microservicio Reservaciones", "Spring Boot | Hexagonal", "Agendamiento y estado de citas.")
+}
+
+System_Ext(pago, "Pasarela de Pago", "Servicio externo")
+System_Ext(notif, "Servicio de Notificaciones", "SMS/Email")
+
+' ==== Relaciones ====
+
+Rel(cliente, frontend, "Usa")
+Rel(empleado, frontend, "Usa")
+Rel(admin, frontend, "Usa")
+
+Rel(frontend, api_gateway, "HTTP/REST")
+Rel(api_gateway, ms_usuarios, "Rutas /usuarios")
+Rel(api_gateway, ms_vehiculos, "Rutas /vehiculos")
+Rel(api_gateway, ms_servicios, "Rutas /servicios")
+Rel(api_gateway, ms_reservas, "Rutas /reservas")
+
+Rel(ms_usuarios, db_usuarios, "CRUD")
+Rel(ms_vehiculos, db_vehiculos, "CRUD")
+Rel(ms_servicios, db_servicios, "CRUD")
+Rel(ms_reservas, db_reservas, "CRUD")
+
+Rel(ms_reservas, pago, "Solicita pago")
+Rel(ms_reservas, notif, "Envía notificaciones")
+
+@enduml

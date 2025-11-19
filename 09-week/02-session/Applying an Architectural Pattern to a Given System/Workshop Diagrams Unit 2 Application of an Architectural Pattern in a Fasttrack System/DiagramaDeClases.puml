@@ -1,0 +1,66 @@
+@startuml clases
+
+package "Domain (Dominio - Núcleo Hexagonal)" {
+  class Client
+  class Address
+  class Package
+  class Shipment
+  class Tracking
+  class Notification
+  class Invoice
+  class Payment
+  class Vehicle
+  class Route
+  class User
+  class Role
+  class Employee
+  class Driver
+  class Support
+  interface "NotificationOutPort" as NotifPort
+  interface "TrackingOutPort" as TrackPort
+  interface "ShipmentOutPort" as ShipmentPort
+}
+
+package "Application (Aplicación - Casos de Uso)" {
+  class "RegisterShipmentUseCase" as RegShipment
+  class "AssignRouteUseCase" as AssignRoute
+  class "GenerateInvoiceUseCase" as GenInvoice
+  class "SendNotificationUseCase" as SendNotif
+}
+
+package "Infrastructure (Infraestructura - Adaptadores)" {
+  class "ShipmentRestController" as RestShipment
+  class "NotificationAdapter" as NotifAdap
+  class "TrackingAdapter" as TrackAdap
+}
+
+User  <|-- Employee
+Employee <|-- Driver
+
+Client -- Address
+Address -- Shipment
+Client -- Shipment
+Shipment -- Package
+Shipment -- Tracking
+Shipment -- Notification
+Shipment -- Invoice
+Invoice -- Payment
+Shipment -- Vehicle
+Shipment -- Route
+Support -- Client
+Role -- User
+
+RegShipment --> Shipment
+RegShipment --> NotifPort
+RegShipment --> ShipmentPort
+AssignRoute --> Vehicle
+AssignRoute --> Route
+GenInvoice --> Invoice
+SendNotif --> Notification
+SendNotif --> NotifPort
+
+NotifAdap ..|> NotifPort
+TrackAdap ..|> TrackPort
+RestShipment --> RegShipment
+
+@enduml

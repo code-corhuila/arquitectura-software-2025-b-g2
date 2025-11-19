@@ -1,0 +1,16 @@
+@startuml RelacionconelarquitectodeSoftware
+actor "Product Owner" as PO
+actor "Equipo de Desarrollo" as DEV
+actor "Equipo de QA" as QA
+
+rectangle "Arquitecto de Software" as ARQ {
+}
+
+PO --> ARQ : Define requerimientos\nprioridades de negocio
+DEV --> ARQ : Implementa siguiendo\nla arquitectura
+QA --> ARQ : Valida criterios de calidad
+
+ARQ --> PO : Traduce requerimientos\nen decisiones técnicas
+ARQ --> DEV : Proporciona guías\ny revisa implementación
+ARQ --> QA : Define lineamientos\nde pruebas y seguridad
+@enduml

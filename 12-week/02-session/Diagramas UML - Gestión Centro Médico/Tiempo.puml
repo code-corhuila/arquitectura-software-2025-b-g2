@@ -1,0 +1,60 @@
+@startuml Tiempo
+title Diagrama de Tiempos - Sistema de Gestión de Centro Médico (GCM)
+
+' ==== Definición de líneas de tiempo ====
+robust "Paciente" as Paciente
+concise "Sistema GCM" as Sistema
+concise "Médico" as Medico
+concise "Base de Datos" as BD
+
+' ==== Estados iniciales ====
+@0
+Paciente is Idle
+Sistema is Esperando
+Medico is Libre
+BD is Disponible
+
+' ==== Proceso de solicitud de cita ====
+@1
+Paciente is SolicitandoCita
+Sistema is ProcesandoSolicitud
+
+@2
+BD is ConsultandoDisponibilidad
+Sistema is EsperandoRespuesta
+
+@3
+BD is Disponible
+Sistema is ConfirmandoCita
+Paciente is EsperandoConfirmacion
+
+@4
+Paciente is CitaConfirmada
+Sistema is EnReposo
+
+' ==== Día de la cita ====
+@5
+Medico is AtendiendoPaciente
+Paciente is EnConsulta
+
+@6
+Medico is RegistrandoHistoria
+BD is GuardandoDatos
+
+' ==== Facturación y cierre del proceso ====
+@7
+BD is GenerandoFactura
+Sistema is EnviandoFactura
+Paciente is RecibiendoFactura
+
+@8
+Paciente is Pagando
+BD is RegistrandoPago
+
+@9
+Paciente is Inactivo
+Sistema is Finalizado
+Medico is Libre
+BD is Disponible
+
+@enduml

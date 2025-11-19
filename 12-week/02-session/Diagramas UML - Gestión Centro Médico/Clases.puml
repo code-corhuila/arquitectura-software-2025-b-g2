@@ -1,0 +1,182 @@
+@startuml Clases
+title Diagrama de Clases - Sistema de Gestión de Centro Médico (GCM)
+
+' ========== CLASES PRINCIPALES ==========
+
+class Usuario {
+  - idUsuario : int
+  - nombre : string
+  - correo : string
+  - contraseña : string
+  - rol : string
+  + iniciarSesion()
+  + cerrarSesion()
+}
+
+class Paciente {
+  - idPaciente : int
+  - direccion : string
+  - telefono : string
+  + solicitarCita()
+  + consultarHistoriaClinica()
+}
+
+class Personal {
+  - idPersonal : int
+  - nombre : string
+  - cargo : string
+  + actualizarDisponibilidad()
+}
+
+class Medico {
+  - idMedico : int
+  - especialidad : string
+  - horario : string
+  + atenderCita()
+  + generarReceta()
+}
+
+class Recepcionista {
+  - idRecepcionista : int
+  + programarCita()
+  + registrarPago()
+}
+
+class Administrador {
+  - idAdministrador : int
+  + gestionarUsuarios()
+  + generarReportes()
+}
+
+' ========== CITAS ==========
+
+class Cita {
+  - idCita : int
+  - fecha : date
+  - hora : time
+  - estado : string
+  + confirmar()
+  + cancelar()
+}
+
+' ========== HISTORIA CLÍNICA ==========
+
+class HistoriaClinica {
+  - idHistoria : int
+  - fechaCreacion : date
+  + agregarConsulta()
+  + consultarEvolucion()
+}
+
+class Consulta {
+  - idConsulta : int
+  - diagnostico : string
+  - observaciones : string
+  + registrarConsulta()
+}
+
+class Receta {
+  - idReceta : int
+  - fecha : date
+  + agregarMedicamento()
+}
+
+' ========== INVENTARIO ==========
+
+class Medicamento {
+  - idMedicamento : int
+  - nombre : string
+  - cantidad : int
+  - precio : float
+  + actualizarStock()
+}
+
+' ========== FACTURACIÓN ==========
+
+class Factura {
+  - idFactura : int
+  - fecha : date
+  - total : float
+  + generarFactura()
+}
+
+class Pago {
+  - idPago : int
+  - metodo : string
+  - monto : float
+  + registrarPago()
+}
+
+' ========== REPORTES ==========
+
+class Reporte {
+  - idReporte : int
+  - tipo : string
+  - fechaGeneracion : date
+  + generarReporte()
+}
+
+
+' ========== HERENCIAS ==========
+
+Usuario <|-- Paciente
+Usuario <|-- Personal
+
+Personal <|-- Medico
+Personal <|-- Recepcionista
+Personal <|-- Administrador
+
+
+' ========== RELACIONES ENTRE CLASES ==========
+
+Paciente "1" -- "0..*" Cita : solicita >
+Cita "1" -- "1" Medico : < atiende
+Cita "1" -- "1" Recepcionista : programa >
+Cita "1" -- "1" Factura : genera >
+Factura "1" -- "1" Pago : < registra
+Paciente "1" -- "1" HistoriaClinica : posee >
+HistoriaClinica "1" -- "0..*" Consulta : contiene >
+Consulta "1" -- "0..1" Receta : genera >
+Receta "1" -- "0..*" Medicamento : incluye >
+Administrador "1" -- "0..*" Reporte : genera >
+Administrador "1" -- "0..*" Personal : gestiona >
+
+@enduml
+
+ACTIVIDAD
+@startuml
+title Diagrama de Actividades - Sistema de Gestión de Centro Médico (GCM)
+
+start
+
+:Inicio del proceso;
+
+:Paciente inicia sesión en el sistema;
+if (¿Autenticación correcta?) then (Sí)
+  :Acceder al módulo de citas médicas;
+  :Seleccionar especialidad y médico disponible;
+  :Solicitar cita médica;
+  :Sistema registra la solicitud de cita;
+  :Recepcionista confirma y agenda la cita;
+  :Sistema envía notificación de confirmación al paciente;
+
+  :Día de la cita;
+  :Médico atiende al paciente;
+  :Registrar consulta y diagnóstico;
+  :Generar receta médica (si aplica);
+  :Actualizar historia clínica del paciente;
+
+  :Generar factura por el servicio;
+  :Paciente realiza el pago;
+  :Registrar pago en el sistema;
+
+  :Administrador genera reporte mensual (proceso paralelo);
+
+else (No)
+  :Mostrar mensaje de error;
+  :Solicitar reingreso de credenciales;
+endif
+
+:Fin del proceso;
+stop
+@enduml

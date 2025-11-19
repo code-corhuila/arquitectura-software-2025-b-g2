@@ -1,0 +1,59 @@
+@startuml Diagrama de Clases - Lavadero Pulido Rojo
+
+class Usuario {
+  - id: UUID
+  - nombre: String
+  - email: String
+  - passwordHash: String
+  - rol: RolEnum
+  + registrar(): boolean
+  + autenticar(): String
+}
+
+class Vehiculo {
+  - id: UUID
+  - placa: String
+  - marca: String
+  - modelo: String
+  - color: String
+  - usuarioId: UUID
+  + registrar(): boolean
+}
+
+class Servicio {
+  - id: UUID
+  - nombre: String
+  - precio: Double
+  - duracionMinutos: Integer
+  + crear(): UUID
+}
+
+class Reservacion {
+  - id: UUID
+  - fechaHora: DateTime
+  - estado: EstadoReservaEnum
+  - usuarioId: UUID
+  - vehiculoId: UUID
+  + crear(): boolean
+  + cancelar(): boolean
+}
+
+enum RolEnum {
+  CLIENTE
+  ADMIN
+  OPERADOR
+}
+
+enum EstadoReservaEnum {
+  PENDIENTE
+  EN_PROCESO
+  COMPLETADA
+  CANCELADA
+}
+
+Usuario "1" -- "0..*" Vehiculo : posee >
+Usuario "1" -- "0..*" Reservacion : realiza >
+Vehiculo "1" -- "0..*" Reservacion : es atendido en >
+Servicio "1..*" --o "1" Reservacion : incluye >
+
+@enduml

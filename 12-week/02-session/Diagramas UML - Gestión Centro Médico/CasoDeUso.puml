@@ -1,0 +1,88 @@
+@startuml caso de uso
+title Diagrama de Casos de Uso - Sistema de Gestión de Centro Médico (GCM)
+
+left to right direction
+
+' ==== Actores ====
+actor "Paciente" as Paciente
+actor "Recepcionista" as Recepcionista
+actor "Médico" as Medico
+actor "Administrador" as Administrador
+
+' ==== Sistema ====
+rectangle "Sistema de Gestión de Centro Médico (GCM)" as GCM {
+  
+  ' ---- Gestión de Usuarios ----
+  usecase "Registrarse en el sistema" as UC1
+  usecase "Iniciar sesión" as UC2
+  usecase "Gestionar roles y permisos" as UC3
+
+  ' ---- Citas Médicas ----
+  usecase "Solicitar cita médica" as UC4
+  usecase "Modificar o cancelar cita" as UC5
+  usecase "Confirmar cita" as UC6
+  usecase "Notificar cita (correo/SMS)" as UC7
+
+  ' ---- Historias Clínicas ----
+  usecase "Registrar historia clínica" as UC8
+  usecase "Consultar historia clínica" as UC9
+  usecase "Generar receta médica" as UC10
+
+  ' ---- Gestión de Personal ----
+  usecase "Registrar personal" as UC11
+  usecase "Actualizar disponibilidad del personal" as UC12
+
+  ' ---- Inventario ----
+  usecase "Controlar stock de medicamentos" as UC13
+  usecase "Registrar ingreso/salida de insumos" as UC14
+
+  ' ---- Facturación ----
+  usecase "Generar factura" as UC15
+  usecase "Registrar pago" as UC16
+  usecase "Consultar facturas" as UC17
+
+  ' ---- Reportes ----
+  usecase "Generar reportes administrativos y clínicos" as UC18
+}
+
+' ==== Base de Datos ====
+database "Base de Datos GCM" as BD
+
+' ==== Relaciones con el sistema ====
+GCM -- BD : "Almacena y consulta datos"
+
+' ==== Relaciones de actores ====
+' Paciente
+Paciente --> UC1
+Paciente --> UC2
+Paciente --> UC4
+Paciente --> UC5
+Paciente --> UC9
+Paciente --> UC17
+
+' Recepcionista
+Recepcionista --> UC4
+Recepcionista --> UC5
+Recepcionista --> UC6
+Recepcionista --> UC16
+
+' Médico
+Medico --> UC8
+Medico --> UC9
+Medico --> UC10
+Medico --> UC12
+
+' Administrador
+Administrador --> UC3
+Administrador --> UC11
+Administrador --> UC13
+Administrador --> UC14
+Administrador --> UC15
+Administrador --> UC18
+
+' ==== Relaciones internas (inclusiones/extensiones) ====
+UC4 .> UC7 : <<include>>
+UC5 .> UC7 : <<include>>
+UC15 .> UC16 : <<extend>>
+
+@enduml

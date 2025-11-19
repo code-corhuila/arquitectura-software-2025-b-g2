@@ -1,0 +1,112 @@
+@startuml Sistema de Vuelos  Casos de Uso (Vista General)
+
+' ======================= Actores =======================
+actor "Pasajero" as Pasajero
+actor "Agente de check-in" as Agente
+actor "Seguridad" as Seguridad
+actor "Autoridad migratoria" as Migracion
+actor "Sistema de aerolínea\n(DCS/PSS)" as DCS
+actor "Display FIDS" as FIDS
+actor "Administrador / Auditor" as Admin
+
+database "Base de Datos" as DB
+
+' ======================= Sistema =======================
+rectangle "Sistema Aeroportuario" <<sistema>> {
+
+  ' --- Gestión de Vuelos ---
+  usecase "Programar vuelo" as UC1
+  usecase "Asignar puerta a vuelo" as UC2
+  usecase "Actualizar estado de vuelo" as UC3
+  usecase "Publicar estado en FIDS" as UC4
+
+  ' --- Gestión de Pasajeros ---
+  usecase "Realizar check-in" as UC5
+  usecase "Emitir boarding pass" as UC6
+  usecase "Validar boarding pass" as UC7
+  usecase "Control documental" as UC8
+  usecase "Control migratorio" as UC10
+  usecase "Control de seguridad" as UC9
+
+  ' --- Embarque ---
+  usecase "Gestionar colas por prioridad" as UC11
+  usecase "Iniciar embarque" as UC12
+  usecase "Registrar abordaje" as UC13
+
+  ' --- Seguimiento y Observabilidad ---
+  usecase "Monitorear pasajero en tiempo real" as UC14
+  usecase "Generar alertas operativas" as UC15
+  usecase "Registrar eventos y auditoría" as UC16
+
+  ' --- Excepciones ---
+  usecase "Manejar excepciones\n(overbooking, retrasos, cambio de puerta, no show)" as UC17
+}
+
+' ======================= Relaciones Actor → Caso de Uso =======================
+Pasajero --> UC5
+Pasajero --> UC8
+Pasajero --> UC9
+Pasajero --> UC10
+Pasajero --> UC13
+
+Agente --> UC1
+Agente --> UC2
+Agente --> UC3
+Agente --> UC12
+Agente --> UC17
+
+Seguridad --> UC9
+Migracion --> UC10
+DCS --> UC6
+DCS --> UC7
+FIDS --> UC4
+Admin --> UC15
+Admin --> UC16
+
+' ======================= Relaciones con Base de Datos =======================
+UC1 --> DB
+UC2 --> DB
+UC3 --> DB
+UC5 --> DB
+UC6 --> DB
+UC7 --> DB
+UC8 --> DB
+UC9 --> DB
+UC10 --> DB
+UC12 --> DB
+UC13 --> DB
+UC16 --> DB
+
+' ======================= INCLUDE (Flujos obligatorios) =======================
+UC5 --> UC6 : <<include>>
+UC5 --> UC7 : <<include>>
+UC8 --> UC10 : <<include>>
+UC8 --> UC9 : <<include>>
+UC12 --> UC13 : <<include>>
+UC14 --> UC15 : <<include>>
+UC15 --> UC16 : <<include>>
+
+' ======================= EXTEND (Excepciones) =======================
+UC17 ..> UC2 : <<extend>>  ' Cambio de puerta
+UC17 ..> UC3 : <<extend>>  ' Retraso
+UC17 ..> UC11 : <<extend>> ' Overbooking
+UC17 ..> UC13 : <<extend>> ' No show
+
+' ======================= Notas =======================
+note right of DB
+  La Base de Datos almacena:
+  - Vuelos y puertas
+  - Reservas, asientos y pasajeros
+  - Equipaje
+  - Eventos y auditoría
+end note
+
+note left of UC17
+  Escenarios críticos cubiertos:
+  - Overbooking
+  - Cambio de puerta
+  - Retrasos
+  - No show
+end note
+
+@enduml

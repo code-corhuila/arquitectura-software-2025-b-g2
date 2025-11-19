@@ -1,0 +1,100 @@
+@startuml Sistema de Vuelos - Diagrama de Paquetes (Capas)
+
+skinparam packageStyle rectangle
+skinparam shadowing false
+left to right direction
+
+' ======================= Paquetes por Capas =======================
+package "Presentación" as PRES {
+    package "Interfaces de Usuario" {
+        [Web / App / Kiosko] as UI
+    }
+    package "Displays de Sala" {
+        [Monitores de Sala] as DISPLAYS
+    }
+}
+
+package "Dominio" as DOM {
+    package "Gestión de Vuelos" {
+        [Vuelo]
+        [Puerta]
+    }
+    package "Gestión de Pasajeros" {
+        [Pasajero]
+        [Reserva]
+        [Asiento]
+        [Equipaje]
+    }
+    package "Embarque" {
+        [Check-in]
+        [Registro de Abordaje]
+        [Colas por prioridad]
+    }
+    package "Seguimiento y Auditoría" {
+        [Tracking Pasajero]
+        [Eventos / Auditoría]
+        [Alertas]
+    }
+    package "Excepciones" {
+        [Overbooking]
+        [Cambio de puerta]
+        [Retrasos]
+        [No show]
+    }
+}
+
+package "Integración" as INTEG {
+    package "Sistemas Externos" as EXT {
+        [DCS/PSS]
+        [Autoridad Migratoria]
+        [Seguridad Aeroportuaria]
+        [FIDS]
+    }
+    package "Persistencia" as PERS {
+        database "Base de Datos" as DB
+    }
+}
+
+' ======================= Relaciones de alto nivel (entre paquetes) =======================
+PRES ..> DOM : <<use>>
+DOM ..> INTEG : <<calls/adapters>>
+DOM ..> DB : <<persist>>
+INTEG ..> EXT : <<API/feeds>>
+
+' ======================= Relaciones internas mínimas =======================
+
+' Presentación -> Dominio
+UI --> [Check-in]
+UI --> [Tracking Pasajero]
+DISPLAYS --> [Alertas]
+
+' Dominio interno
+[Check-in] --> [Reserva]
+[Check-in] --> [Asiento]
+[Registro de Abordaje] --> [Pasajero]
+[Colas por prioridad] --> [Reserva]
+
+' Excepciones (dependencias, no <<extend>> en paquetes)
+[Overbooking] ..> [Colas por prioridad] : impacta
+[Cambio de puerta] ..> [Vuelo] : impacta
+[Retrasos] ..> [Vuelo] : impacta
+[No show] ..> [Registro de Abordaje] : impacta
+
+[Tracking Pasajero] --> [Alertas]
+[Alertas] --> [Eventos / Auditoría]
+
+' Dominio -> Integración / Persistencia
+[Check-in] --> [DCS/PSS]
+[Vuelo] --> [FIDS]
+[Check-in] --> DB
+[Registro de Abordaje] --> DB
+[Tracking Pasajero] --> DB
+[Colas por prioridad] --> DB
+[Eventos / Auditoría] --> DB
+
+' (Importante) Sistemas externos NO escriben directo en DB
+' [DCS/PSS] --> DB   ' <- eliminado
+' [Autoridad Migratoria] --> DB  ' <- eliminado
+' [Seguridad Aeroportuaria] --> DB ' <- eliminado
+
+@enduml

@@ -1,0 +1,26 @@
+@startuml Estado
+[*] --> Programado
+
+state Programado {
+    [*] --> Emitido : Se emite BoardingPass
+}
+
+Programado --> AbiertoCheckIn : Se habilita check-in
+state AbiertoCheckIn {
+    Emitido --> CheckIn : Pasajero realiza check-in
+}
+
+AbiertoCheckIn --> CerradoCheckIn : Tiempo límite cumplido
+CerradoCheckIn --> Embarcando : Puerta abierta
+state Embarcando {
+    CheckIn --> Seguridad : Control seguridad
+    Seguridad --> Embarque : Validación en puerta
+    Embarque --> Abordado : Pasajero abordó
+}
+
+Embarcando --> CerradoEmbarque : Se cierra la puerta
+CerradoEmbarque --> EnVuelo : Despegue
+EnVuelo --> Aterrizado : Aterrizaje
+Aterrizado --> Finalizado : Vuelo completado
+Finalizado --> [*]
+@enduml

@@ -1,0 +1,1 @@
+https://trello.com/invite/b/691ba211b4d7fc87de675458/ATTI7dc5a561fe8cf848767a0a7d6df2d222EAEBB361/proyecto-arquitectura-de-software

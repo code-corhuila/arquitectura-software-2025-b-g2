@@ -1,0 +1,65 @@
+@startuml C4_Level4
+title C4 – Nivel 4 (Código): Microservicio de Reservas
+
+skinparam rectangle {
+  BackgroundColor #D9E8FF
+  BorderColor #4A78C2
+  RoundCorner 20
+}
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+' =============================
+' APPS EXTERNAS (FRONTEND)
+' =============================
+rectangle "Portal Web/Móvil\n(Angular / Ionic)" as FRONTEND #ADD8FF
+
+' =============================
+' MICROSERVICIO DE RESERVAS
+' =============================
+package "Microservicio de Reservas\n(Spring Boot + Hexagonal)" as MS_RES {
+
+    rectangle "ReservasController\n<<REST Controller>>\n\n• Expone endpoints para crear,\n  consultar y modificar reservas" as controller
+    rectangle "ReservasService\n<<Service Layer>>\n\n• Lógica de negocio para agendar,\n  validar disponibilidad y actualizar estado" as service
+    rectangle "ReservasRepository\n<<Spring Data JPA>>\n\n• Acceso a datos y operaciones CRUD" as repo
+    
+    rectangle "PagoAdapter\n<<HTTP Client>>\n\n• Consume la pasarela externa de pagos" as adapter_pago
+    rectangle "NotificacionAdapter\n<<SMTP/SMS Client>>\n\n• Envía notificaciones a clientes" as adapter_notif
+}
+
+' =============================
+' BASES DE DATOS
+' =============================
+rectangle "DB Reservas\n(MySQL)" as DB_RES #CDE3FF
+rectangle "DB Usuarios\n(MySQL)" as DB_USER #CDE3FF
+rectangle "DB Servicios\n(MySQL)" as DB_SERV #CDE3FF
+
+' =============================
+' SISTEMAS EXTERNOS
+' =============================
+rectangle "Pasarela de Pago\n(Servicio Externo)" as PAGO #E8E8E8
+rectangle "Servicio de Notificaciones\n(SMS/Email)" as NOTIF #E8E8E8
+
+
+' =============================
+' RELACIONES
+' =============================
+FRONTEND --> controller : HTTP/JSON\nUsa
+
+controller --> service : Llama a
+service --> repo : CRUD
+
+' Adapters
+service --> adapter_pago : Solicita pagos
+service --> adapter_notif : Envía notificaciones
+
+' Bases de datos
+repo --> DB_RES : Lee/Escribe
+controller --> DB_USER : Valida usuario (solo lectura)
+service --> DB_SERV : Consulta servicios
+
+' Sistemas externos
+adapter_pago --> PAGO : HTTP/JSON
+adapter_notif --> NOTIF : SMTP/SMS
+
+@enduml

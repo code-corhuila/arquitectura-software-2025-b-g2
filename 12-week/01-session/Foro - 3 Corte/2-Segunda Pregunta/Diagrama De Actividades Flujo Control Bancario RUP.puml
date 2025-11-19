@@ -1,0 +1,65 @@
+@startuml flujo de control bancario RUP
+
+title Diagrama de Actividades: Flujo RUP con Puntos de Control para Banca
+
+start
+group INICIO (Definición y Viabilidad)
+  :Definición de Alcance y Requisitos Críticos (Seguridad/Compliance);
+  :Identificación de Riesgos de Alto Nivel;
+end group
+
+partition "HITO 1: Evaluación de Viabilidad" {
+  if (¿Requisitos de Trazabilidad Viables?) then (Sí)
+    :Aprobar Plan y Recursos;
+  else (No)
+    :Revisar Alcance o Metodología;
+    stop
+  end if
+}
+group ELABORACIÓN (Arquitectura y Análisis)
+  :Diseño de la Arquitectura Base (Modularidad);
+  :Análisis Detallado de Requisitos y Modelado de Casos de Uso;
+  :Mitigación de Riesgos de Seguridad y Cumplimiento;
+end group
+
+partition "HITO 2: Evaluación Arquitectónica y de Riesgos" {
+  if (¿Arquitectura Segura y Riesgos Controlados?) then (Sí)
+    :Aprobar Diseño de Arquitectura (Baseline);
+  else (No)
+    :Refinar Diseño de Seguridad y Requisitos;
+    stop
+  end if
+}
+group CONSTRUCCIÓN (Desarrollo Iterativo Controlado)
+  repeat
+    :Implementación y Pruebas Unitarias;
+    :Generación de Documentación de Trazabilidad del Código;
+    :Pruebas de Integración Continua;
+  repeat while (Iteración finalizada?) is (No) not (Sí)
+end group
+
+partition "HITO 3: Capacidad Operacional Inicial" {
+  if (¿Calidad y Trazabilidad de Código Verificada?) then (Sí)
+    :Aprobar Versión Candidata para Transición;
+  else (No)
+    :Corrección de Fallos y Pruebas Adicionales;
+    stop
+  end if
+}
+group TRANSICIÓN (Aceptación y Entrega)
+  :Pruebas de Aceptación del Usuario (UAT);
+  :Auditoría de Cumplimiento Normativo y Seguridad;
+  :Preparación del Despliegue Final;
+end group
+
+partition "HITO 4: Disponibilidad del Producto" {
+  if (¿Aceptación Final del Cliente y Auditoría Exitosa?) then (Sí)
+    :Despliegue e Inicio de Operaciones;
+    stop
+  else (No)
+    :Ajuste Final y Re-Auditoría;
+    stop
+  end if
+}
+
+@enduml
